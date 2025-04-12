@@ -21,6 +21,13 @@ public class EnemyController : MonoBehaviour
             rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
         else
             rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
+        FlipSprite();
+    }
+    private void FlipSprite()
+    {
+        Vector3 scale = transform.localScale;
+        scale.x = isMovingRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+        transform.localScale = scale;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
