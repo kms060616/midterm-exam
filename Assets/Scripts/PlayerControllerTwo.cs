@@ -15,6 +15,18 @@ public class PlayerControllerTwo : MonoBehaviour
     private bool isGrounded;
     private float moveInput;
 
+    
+    private bool isInvincible = false;
+    private float invincibleTime = 0f;
+
+    
+    private float speedBoostMultiplier = 1f;
+    private float speedBoostTime = 0f;
+
+    
+    private float jumpForceMultiplier = 1f;
+    private float jumpBoostTime = 0f;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -23,32 +35,82 @@ public class PlayerControllerTwo : MonoBehaviour
 
     void Update()
     {
-        // 좌우 이동 입력
-        moveInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
+        
+        if (isInvincible)
+        {
+            invincibleTime -= Time.deltaTime;
+            if (invincibleTime <= 0f)
+            {
+                isInvincible = false;
+            }
+        }
 
-        // 캐릭터 방향 반전
+        
+        if (speedBoostTime > 0f)
+        {
+            speedBoostTime -= Time.deltaTime;
+            if (speedBoostTime <= 0f)
+            {
+                speedBoostMultiplier = 1f;
+            }
+        }
+
+        
+        if (jumpBoostTime > 0f)
+        {
+            jumpBoostTime -= Time.deltaTime;
+            if (jumpBoostTime <= 0f)
+            {
+                jumpForceMultiplier = 1f;
+            }
+        }
+
+        
+        moveInput = Input.GetAxisRaw("Horizontal");
+        rb.velocity = new Vector2(moveInput * moveSpeed * speedBoostMultiplier, rb.velocity.y);
+
+        
         if (moveInput < 0)
             transform.localScale = new Vector3(-1f, 1f, 1f);
         else if (moveInput > 0)
             transform.localScale = new Vector3(1f, 1f, 1f);
 
-        // 걷기 애니메이션을 위한 Speed 값 전달
+        
         pAni.SetFloat("Speed", Mathf.Abs(moveInput));
 
-        // 점프 처리
+        
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * jumpForce * jumpForceMultiplier, ForceMode2D.Impulse);
             pAni.SetTrigger("JumpAction");
         }
     }
 
+    
+    public void ActivateInvincibility(float duration)
+    {
+        isInvincible = true;
+        invincibleTime = duration;
+    }
+
+    
+    public void ActivateSpeedBoost(float duration, float speedMultiplier)
+    {
+        speedBoostMultiplier = speedMultiplier;
+        speedBoostTime = duration;
+    }
+
+    
+    public void ActivateJumpBoost(float duration, float multiplier)
+    {
+        jumpForceMultiplier = multiplier;
+        jumpBoostTime = duration;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Respawn"))
+        if (collision.CompareTag("Respawn") && !isInvincible)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
@@ -58,7 +120,7 @@ public class PlayerControllerTwo : MonoBehaviour
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
 
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy") && !isInvincible)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
