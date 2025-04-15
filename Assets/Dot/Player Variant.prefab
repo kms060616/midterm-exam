@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 9766ff6f0a841dd4e972953184e6c7ee, type: 3}
+    - target: {fileID: 4969488439423913822, guid: 89d37d220b3264b4c9be2579a7544a2f, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9077609587649266134, guid: 89d37d220b3264b4c9be2579a7544a2f, type: 3}
       propertyPath: m_Name
       value: Player Variant
@@ -106,8 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d789edc9e1b3a8c4f8c19d83050139fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
-  jumpForce: 8
+  moveSpeed: 3
+  jumpForce: 7
   groundCheck: {fileID: 6249815562062338916}
   groundLayer:
     serializedVersion: 2
