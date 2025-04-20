@@ -124,5 +124,10 @@ public class PlayerControllerTwo : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        if (collision.CompareTag("Boss") && !isInvincible)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }

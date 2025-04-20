@@ -9,6 +9,9 @@ TagManager:
   - Obstacle
   - InvincibleItem
   - Speed
+  - Ground
+  - SpecialFish
+  - Boss
   layers:
   - Default
   - TransparentFX
