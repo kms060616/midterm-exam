@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class PlayerControllerTwo : MonoBehaviour
 {
@@ -27,10 +28,14 @@ public class PlayerControllerTwo : MonoBehaviour
     private float jumpForceMultiplier = 1f;
     private float jumpBoostTime = 0f;
 
+    float score;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         pAni = GetComponent<Animator>();
+
+        score = 1000f;
     }
 
     void Update()
@@ -85,6 +90,8 @@ public class PlayerControllerTwo : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce * jumpForceMultiplier, ForceMode2D.Impulse);
             pAni.SetTrigger("JumpAction");
         }
+        
+        score -= Time.deltaTime;
     }
 
     
@@ -117,6 +124,8 @@ public class PlayerControllerTwo : MonoBehaviour
 
         if (collision.CompareTag("Finish"))
         {
+            HighScore.TrySet(SceneManager.GetActiveScene().buildIndex, (int)score);
+
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
 
