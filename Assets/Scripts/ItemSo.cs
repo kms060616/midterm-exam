@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemSo : MonoBehaviour
+[CreateAssetMenu(menuName = "Game/Item", fileName = "NewItem")]
+public class ItemSo : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Score Value")]
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int point = 10;
 }
+
+

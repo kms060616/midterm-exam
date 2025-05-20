@@ -99,6 +99,7 @@ public class PlayerControllerTwo : MonoBehaviour
     {
         isInvincible = true;
         invincibleTime = duration;
+        
     }
 
     
@@ -138,5 +139,11 @@ public class PlayerControllerTwo : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        if (collision.CompareTag("InvincibleItem"))
+        {
+            score += collision.GetComponent<ItemObject>().GetPoint();
+        }
+        
     }
 }
